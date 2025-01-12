@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tick-tak game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .main {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 50px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 30px;
+            text-shadow: 0px 0px 15px rgba(0, 255, 255, 0.7);
+        }
+
+        .result {
+            font-weight: bold;
+            font-size: 30px;
+            color: #fff;
+            text-shadow: 0px 0px 10px rgba(0, 255, 255, 0.6);
+        }
+
+        .continer {
+            display: grid;
+            grid-template-columns: repeat(3, 120px);
+            grid-template-rows: repeat(3, 120px);
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .box {
+            width: 120px;
+            height: 120px;
+            background-color: #0a3d5c;
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            font-size: 40px;
+            font-weight: bold;
+            color: #00ffcc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .box:hover {
+            background-color: #00ffcc;
+            color: #0a3d5c;
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.7);
+            transform: scale(1.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .box:active {
+            background-color: #00b59c;
+            transform: scale(0.95);
+        }
+
+        .reset, .newgame {
+            background-color: #00b59c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 15px;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .reset:hover, .newgame:hover {
+            background-color: #008b76;
+            transform: scale(1.1);
+        }
+
+        .reset:active, .newgame:active {
+            background-color: #006f58;
+        }
+
+        .main::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/astronaut.jpg') center center / cover;
+            opacity: 0.1;
+            z-index: -1;
+            animation: particleAnim 4s infinite linear;
+        }
+
+        @keyframes particleAnim {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1 class="result"></h1>
+        <button class="reset">Reset</button>
+        <button class="newgame">Newgame</button>
+        <div class="continer">
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>     
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+        </div>
+    </div>
+
+    <script>
+        const reset_btn = document.querySelector(".reset");
+        const newgame_btn = document.querySelector(".newgame");
+        const box_btn = document.querySelectorAll(".box");
+
+        let turnO = true;
+        const winer_patten = [
+            [0,1,2], [0,3,6], [0,4,8], [1,4,7], [2,5,8], [3,4,5], [2,4,6], [6,7,8]
+        ];
+
+        box_btn.forEach((box) => {
+            box.addEventListener("click", () => {
+                if (box.innerText === "") {
+                    if (turnO) {
+                        box.innerText = "O";
+                        turnO = false;   
+                    } else {
+                        box.innerText = "X";
+                        turnO = true;   
+                    }
+                    disable_box();
+                    checkwiner();
+                }
+            });
+        });
+
+        const checkwiner = () => {
+            for (let patten of winer_patten) {
+                let pos1val = box_btn[patten[0]].innerText;
+                let pos2val = box_btn[patten[1]].innerText;
+                let pos3val = box_btn[patten[2]].innerText;
+                if (pos1val !== "" && pos2val !== "" && pos3val !== "") {
+                    if (pos1val === pos2val && pos2val === pos3val) {
+                        document.querySelector(".result").innerHTML = `Winner is ${pos1val}`;
+                        return;
+                    }
+                }
+            }
+        }
+
+        const disable_box = () => {
+            for (let box of box_btn) {
+                box.disabled = true;
+            }
+        }
+
+        const enableboxes = () => {
+            box_btn.forEach((box) => {
+                box.disabled = false;
+                box.innerText = "";
+            });
+        }
+
+        const reset_game = () => {
+            enableboxes();
+            document.querySelector(".result").innerHTML = "";
+            turnO = true;
+        }
+
+        reset_btn.addEventListener("click", reset_game);
+        newgame_btn.addEventListener("click", reset_game);
+    </script>  
+</body>
+</html>
