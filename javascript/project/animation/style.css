@@ -1,0 +1,15 @@
+#main{
+    position: relative;
+    height: auto;
+    width: 100%;
+    background-color: bisque;
+}
+#home{
+    margin: 10px;
+     background-color: blue;
+     height: 10vh;
+     width: 10vh;
+}
+.link{
+
+}
