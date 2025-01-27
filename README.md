@@ -54,7 +54,7 @@ The JavaScript code handles:
 ## Screenshots
 
 ### Game Grid
-![Game Grid](images/screenshot1.png)
+(Screenshot 2025-01-27 221826.png)
 
 ### Winning State
 ![Winning State](Screenshot 2025-01-27 221826.png)
