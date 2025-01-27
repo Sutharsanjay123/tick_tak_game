@@ -72,7 +72,3 @@ The JavaScript code handles:
 - Enhance the UI/UX with additional animations and sound effects.
 - Make the grid dynamically scalable for different screen sizes.
 
-## License
-
-This project is open-source and available for modification and use under the MIT License.
-
